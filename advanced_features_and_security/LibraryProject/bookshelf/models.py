@@ -12,7 +12,6 @@ class Book(models.Model):
     author = models.CharField(max_length=100)
     publication_year = models.IntegerField()
     
-    # Example of how to reference the custom user model
     added_by = models.ForeignKey(
         User, 
         on_delete=models.CASCADE, 
@@ -21,9 +20,14 @@ class Book(models.Model):
         help_text="User who added this book"
     )
 
+    class Meta:
+        # Ensures that you cannot have two books with the same title and author
+        unique_together = [['title', 'author']]
+        # Sets the default ordering for querysets
+        ordering = ['title']
+
     def __str__(self):
         """
         Returns a string representation of the book, which is its title.
         """
         return self.title
-
